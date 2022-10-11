@@ -1,50 +1,105 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+// const { title } = require('process');
 
 inquirer
   .prompt([
     {
       type: 'input',
-      name: 'name',
-      message: 'What is your name?',
+      name: 'Title',
+      message: 'What is your projects title?',
     },
     {
       type: 'input',
-      name: 'location',
-      message: 'Where are you from?',
+      name: 'Description',
+      message: 'Description of your project?',
     },
     {
       type: 'input',
-      name: 'hobby',
-      message: 'What is your favorite hobby?',
+      name: 'Installation',
+      message: 'How do you install your project?',
     },
     {
       type: 'input',
-      name: 'food',
-      message: 'What is your favorite food?',
+      name: 'Usage',
+      message: 'what are some of the usages in your project?',
     },
     {
       type: 'input',
-      name: 'github',
-      message: 'Enter your GitHub Username',
+      name: 'Contributing',
+      message: 'what are this projects contribution guidelines?',
     },
     {
       type: 'input',
-      name: 'linkedin',
-      message: 'Enter your LinkedIn URL.',
+      name: 'Tests',
+      message: 'What are your test instructions?',
     },
+    {
+        type: 'list',
+        message: 'What license was used for this project?',
+        choices: [
+            "Apache",
+            "Boost",
+            "BSD",
+            "GNU",
+            "Eclipse",
+            "MIT",
+            "Unlicensed"
+        ],
+        name: "License",
+    },
+    {
+        type: 'input',
+        name: 'Github',
+        message: 'What is your Github username?',
+    },
+    {
+        type: 'input',
+        name: 'Repository',
+        message: 'What is the name of your github repository',
+    },
+    {
+        type: 'input',
+        name: 'Email',
+        message: 'What is your email address?',
+    }
   ])
   .then((answers) => {
-    const htmlPageContent = generateHTML(answers);
+    const readMeContent = generateMarkdown(answers);
 
-    fs.writeFile('index.html', htmlPageContent, (err) =>
-      err ? console.log(err) : console.log('Successfully created index.html!')
+    fs.writeFile('Dynamic-readME.md', readMeContent, (err) =>
+      err ? console.log(err) : console.log('Successfully created readMe!')
     );
   });
 
-const generateREADME = ({Title, Description, TableofContents, Installation, Usage, License, Contributing, Tests, Github}) =>
+const generateMarkdown = ({Title, Description, TableofContents, Installation, Usage, License, Contributing, Tests, Github, Repository, Email}) =>
+`
+#${Title}
 
-`#${Title}
+##Description
+${Description}
 
-##${Description}
-${Installation}`
+##Installation
+${Installation}
+
+##Usage
+${Usage}
+
+##Contributing
+${Contributing}
+
+##Tests
+${Tests}
+
+##License
+${License}
+
+##Github
+${Github}
+
+##Repository
+${Repository}
+
+##Contact Me!
+${Email}
+`;
